@@ -1,0 +1,14 @@
+.piece {
+    width: 60px; /* Tamanho menor que o quadrado */
+    height: 60px;
+    border-radius: 50%; /* Deixa a peça redonda */
+    position: absolute;
+}
+
+.green {
+    background-color: lightgreen;
+}
+
+.orange {
+    background-color: orange;
+}

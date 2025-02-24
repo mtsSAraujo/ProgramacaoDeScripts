@@ -1,0 +1,16 @@
+.square {
+    width: 75px;
+    height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.black {
+    background-color: black;
+}
+
+.white {
+    background-color: white;
+}
