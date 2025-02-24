@@ -3,6 +3,7 @@
     height: 60px;
     border-radius: 50%; /* Deixa a peça redonda */
     position: absolute;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
 .green {
@@ -11,4 +12,9 @@
 
 .orange {
     background-color: orange;
+}
+
+.piece:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
 }
