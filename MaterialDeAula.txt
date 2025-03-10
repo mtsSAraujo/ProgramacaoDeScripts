@@ -1,0 +1,3 @@
+Comandos para iniciar um projeto next:
+
+npx create-next-app@latest
