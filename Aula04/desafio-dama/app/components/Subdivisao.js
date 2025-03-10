@@ -5,7 +5,14 @@ export default function Subdivisao(props) {
         <div style={{
             backgroundColor: props.preta ? "#000" : "#fff",
         }} className={style.subdivisao}>
-            
+            <div className= {
+                `
+                ${props.peca ? style.peca : ""}
+                ${props.jogador2 && props.peca ? style.peca1 : ""}
+                `
+            }>
+
+            </div>
         </div>
     );
 }

@@ -7,14 +7,14 @@ export default function Home() {
       <h1 style= {{
         color: "white",
       }}>Dama</h1>
-      <Linha/>
+      <Linha peca/>
+      <Linha preta peca/>
+      <Linha peca/>
       <Linha preta/>
       <Linha/>
-      <Linha preta/>
-      <Linha/>
-      <Linha preta/>
-      <Linha/>
-      <Linha preta/>
+      <Linha preta peca jogador2/>
+      <Linha peca jogador2/>
+      <Linha preta peca jogador2/>
   </div>
   );
 }
