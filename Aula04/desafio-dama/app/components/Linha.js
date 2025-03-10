@@ -18,6 +18,7 @@ export default function Linha(props) {
                     <Subdivisao
                         key = {i}
                         preta= {i % 2 === 0 ? props.preta : !props.preta}
+                        
                     />
                 ))
             }
