@@ -1,3 +1,7 @@
 Comandos para iniciar um projeto next:
 
 npx create-next-app@latest
+
+rodar um projeto criado --> na raiz do projeto usar o comando:
+
+npm run dev;
