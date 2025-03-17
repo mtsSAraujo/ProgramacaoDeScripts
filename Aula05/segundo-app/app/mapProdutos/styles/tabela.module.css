@@ -1,0 +1,45 @@
+/* Centraliza o título e a tabela */
+.tabela-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* Estilo para o título */
+.tabela-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* Estilo para a tabela */
+.tabela {
+    width: 80%;
+    border-collapse: collapse;
+    margin: 0 auto;
+}
+
+/* Centraliza o conteúdo das células da tabela */
+.tabela th, .tabela td {
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+/* Estilo para o cabeçalho da tabela */
+.tabela th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+/* Estilo para as linhas da tabela */
+.tabela tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.tabela tr:hover {
+    background-color: #f1f1f1;
+}

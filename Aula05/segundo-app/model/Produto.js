@@ -20,4 +20,18 @@ class Produto {
     get preco() {
         return this.#preco;
     }
+
+    set id(id) {
+        this.#id = id;
+    }
+
+    set nome(nome) {
+        this.#nome = nome;
+    }
+
+    set preco(preco) {
+        this.#preco = preco;
+    }
 }
+
+export default Produto;
