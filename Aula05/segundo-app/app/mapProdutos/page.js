@@ -1,5 +1,5 @@
 import ListaProdutos from "@/data/ListaProdutos";
-import style from "@/app/mapProdutos/styles/tabela.module.css"
+import style from "@/app/mapProdutos/css/tabela.module.css"
 
 export default function TabelaDeProdutos() {
     function renderLinhas() {
@@ -20,8 +20,8 @@ export default function TabelaDeProdutos() {
     }
 
     return (
-        <div className={style.tabela-container}>
-            <h1 className={style.tabela-title}>Tabela de Produtos</h1>
+        <div className={style.tabelaContainer}>
+            <h1 className={style.tabelaTitle}>Tabela de Produtos</h1>
             <table className={style.tabela}>
                 <thead>
                     <tr>

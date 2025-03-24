@@ -1,5 +1,5 @@
 /* Centraliza o título e a tabela */
-.tabela-container {
+.tabelaContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -10,7 +10,7 @@
 }
 
 /* Estilo para o título */
-.tabela-title {
+.tabelaTitle {
     font-size: 24px;
     margin-bottom: 20px;
 }
