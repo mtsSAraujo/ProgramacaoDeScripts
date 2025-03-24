@@ -1,0 +1,38 @@
+/* app/pastelaria/css/menu.module.css */
+.menuWrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 30px; /* Distância do header */
+    margin-bottom: 10px; /* Margem inferior */
+  }
+  
+  .menuContent {
+    width: 992px;
+    min-height: calc(100vh - 340px); /* Altura restante da página */
+    background-color: #fff9f0; /* Cor mais clara que o header */
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  }
+  
+  /* Responsividade */
+  @media (max-width: 1040px) {
+    .menuContent {
+      width: calc(100% - 288px); /* Mantém proporção similar */
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .menuContent {
+      width: calc(100% - 40px);
+      min-height: calc(100vh - 300px);
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .menuContent {
+      width: calc(100% - 20px);
+      padding: 15px;
+    }
+  }
