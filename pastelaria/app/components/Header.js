@@ -1,5 +1,6 @@
 import styles from '../styles/Header.module.css';
 import {FaGlassWhiskey, FaHamburger} from 'react-icons/fa';
+import {FaBeerMugEmpty} from "react-icons/fa6";
 
 export default function Header() {
     return (
@@ -9,7 +10,7 @@ export default function Header() {
                     Pastelaria do seu Zé
                     <div className={styles.iconContainer}>
                         <FaHamburger className={styles.icon} />
-                        <FaGlassWhiskey className={styles.icon} />
+                        <FaBeerMugEmpty className={styles.icon} />
                     </div>
                 </div>
             </div>
