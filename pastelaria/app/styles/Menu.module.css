@@ -1,0 +1,63 @@
+.menuContainer {
+    width: 992px;
+    background-color: #f8e5d1;
+    padding: 20px;
+    border-radius: 15px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    justify-items: center;
+    border-bottom: 10px;
+}
+
+
+.menuItem {
+    background-color: #ffe8cc;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 6px 6px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    margin: 20px;
+    width: 100%;
+    max-width: 200px;
+    font-family: "GFS Didot", cursive;
+    font-size: 15px;
+}
+
+.image {
+    border-radius: 10px;
+    transition: filter 0.3s ease-in-out;
+    rotate: 280deg;
+}
+
+.grayscale {
+    filter: grayscale(100%);
+}
+
+.name, .price {
+    font-size: 18px;
+    font-weight: bold;
+    color: black;
+    margin-top: 10px;
+}
+
+.soldOut {
+    color: red;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.outOfStock {
+    opacity: 0.6;
+}
+
+.clickable:hover {
+    cursor: pointer;
+    transform: scale(1.03);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}

@@ -1,0 +1,42 @@
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.outerContainer {
+    width: 992px;
+    height: 170px;
+    background-color: #e6c19c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 15px;
+}
+
+.innerContainer {
+    width: 100%;
+    height: 100%;
+    background-color: #f8e5d1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    font-weight: bold;
+    border-radius: 15px;
+    font-family: "GFS Didot", cursive;
+}
+
+.iconContainer {
+    display: flex;
+    align-items: center;
+    margin-left: 15px;
+}
+
+.icon {
+    font-size: 48px;
+    color: #B89A7D;
+}
