@@ -1,5 +1,5 @@
 import styles from '../styles/Header.module.css';
-import {FaGlassWhiskey, FaHamburger} from 'react-icons/fa';
+import {FaHamburger} from 'react-icons/fa';
 import {FaBeerMugEmpty} from "react-icons/fa6";
 
 export default function Header() {
