@@ -9,7 +9,9 @@ const menuItems = [
     { id: 5, name: 'Queijo', price: 'R$ 10,00', image: '/images/pastel-default.png', inStock: true },
     { id: 6, name: 'Carne', price: 'R$ 11,00', image: '/images/pastel-default.png', inStock: false },
     { id: 7, name: 'Frango', price: 'R$ 12,00', image: '/images/pastel-default.png', inStock: true },
-    { id: 8, name: 'Pizza', price: 'R$ 13,00', image: '/images/pastel-default.png', inStock: false }
+    { id: 8, name: 'Pizza', price: 'R$ 13,00', image: '/images/pastel-default.png', inStock: false },
+    { id: 9, name: 'Frango', price: 'R$ 12,00', image: '/images/pastel-default.png', inStock: true },
+    { id: 10, name: 'Pizza', price: 'R$ 13,00', image: '/images/pastel-default.png', inStock: false }
 ];
 
 export default function Menu() {
