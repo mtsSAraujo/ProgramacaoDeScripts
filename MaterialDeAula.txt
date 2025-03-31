@@ -5,3 +5,19 @@ npx create-next-app@latest
 rodar um projeto criado --> na raiz do projeto usar o comando:
 
 npm run dev;
+
+Projeto de construção da "pastelaria":
+
+Container --> margen de 144px de cada lado (esquerda e direita);
+992x170, borda arredondada --> h1; borda maior com marge superior e inferior de 10px;
+container com pad interno ao de cima, com cores mais claras, onde vai ficar o titulo centralizado;
+
+Segundo container --> Menu;
+Espaçamento de 20px inferior e superior.
+Combinar as cores e criar os cards de cada pastel.
+Card --> 200x230, sem borda + css dropshadow;
+Fazer a renderização ser responsiva de acordo com o estoque (muda a cor do card ou coloca algo por cima, algo nessas linhas)/
+Colocar o PNG do pastel/produto do card.
+Colocar nome do produto + preço;
+Dar distancia de alguns pixels entre cada card;
+No caso de um produto esgotado: imagem em preto e branco e linha sobre o nome do produto. 
