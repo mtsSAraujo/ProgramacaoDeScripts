@@ -21,3 +21,7 @@ Colocar o PNG do pastel/produto do card.
 Colocar nome do produto + preço;
 Dar distancia de alguns pixels entre cada card;
 No caso de um produto esgotado: imagem em preto e branco e linha sobre o nome do produto. 
+
+Criar uma calculadora usando useState();
+A ideia é fazer uma calculadora de operaçoes basicas;
+essa calculadora deve ser igual a calculadora do windows;
