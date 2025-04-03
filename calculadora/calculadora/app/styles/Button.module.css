@@ -1,0 +1,40 @@
+.button {
+    padding: 20px;
+    font-size: 22px;
+    border: none;
+    border-radius: 12px;
+    background: #3b3b3b;
+    color: white;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.button:hover {
+    background: #505050;
+}
+
+.button:active {
+    background: #606060;
+}
+
+.button:focus {
+    outline: none;
+}
+
+/* Botões especiais */
+.button[value="C"],
+.button[value="⌫"],
+.button[value="%"],
+.button[value="+/-"] {
+    background: #4b4b4b;
+    color: #f5a623;
+}
+
+.button[value="="] {
+    background: #0078d7;
+    color: white;
+}
+
+.button[value="="]:hover {
+    background: #2892ff;
+}

@@ -1,0 +1,15 @@
+.calculator {
+    background: #2d2d2d;
+    border-radius: 16px;
+    padding: 24px;
+    width: 360px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}

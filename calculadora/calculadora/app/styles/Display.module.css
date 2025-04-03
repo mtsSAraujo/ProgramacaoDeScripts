@@ -1,0 +1,33 @@
+.display {
+    position: relative;
+    background-color: #1e1e1e;
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    margin-bottom: 16px;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+
+.top {
+    font-size: 20px;
+    color: #a0a0a0;
+}
+
+.bottom {
+    font-size: 32px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-top: 6px;
+}
+
+.result {
+    font-size: 40px;
+    font-weight: bold;
+    color: #00ff88;
+}
