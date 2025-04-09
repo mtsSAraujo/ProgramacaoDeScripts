@@ -26,6 +26,17 @@ export default function Calculator() {
         setIsResultDisplayed(true);
     };
 
+    const formatResult = (value) => {
+        if (typeof value !== 'number') return value;
+      
+        const abs = Math.abs(value);
+      
+        if ((abs >= 1e10 || (abs > 0 && abs < 1e-10))) {
+          return value.toExponential(3);
+        }
+      
+        return value;
+      };
 
     const handleClick = (value) => {
 
@@ -47,7 +58,7 @@ export default function Calculator() {
                 expr = expr.replace(/(\d+(\.\d+)?)%/g, '($1/100)');
                 const evalResult = eval(expr);
 
-                setResult(evalResult);
+                setResult(formatResult(evalResult));
                 setIsResultDisplayed(true);
 
                 setHistory(prev => [...prev, { expression, result: evalResult }]);
