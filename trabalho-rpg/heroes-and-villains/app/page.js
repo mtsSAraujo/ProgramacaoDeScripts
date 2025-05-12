@@ -1,6 +1,7 @@
 'use client'
 
 import Character from "./components/Character"
+import gameManager from "./hooks/gameManager"
 
 export default function Home() {
 
