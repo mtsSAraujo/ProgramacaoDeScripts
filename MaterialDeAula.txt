@@ -31,5 +31,6 @@ npm init -y
 
 Adicionar o prisma as dependencias:
 npm install express prisma @prisma/client pg
+npm install -D nodemon 
 
 Senha*Nova2011
