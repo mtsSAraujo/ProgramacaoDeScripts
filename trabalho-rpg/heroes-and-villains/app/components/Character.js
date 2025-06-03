@@ -12,8 +12,8 @@ export default function Character({ data, alignment }) {
           </div>
         <div className="life-bar">
           <div className="life-fill" style={{ width: lifePercent }}></div>
-          <div className="life-text">{data.life} HP</div>
         </div>
+          <div className="life-text">{data.life} HP</div>
       </div>
     );
   }

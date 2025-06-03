@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 export default function useGameManager() {
-  const initialHero = { life: 100, name: "Frisk", baseAttack: 8 };
+  const initialHero = { life: 100, name: "Frisk", baseAttack: 5 };
   const initialVillain = { life: 100, name: "Sans", intimacy: 0, baseAttack: 10 };
   const initialInventory = [
         { name: "Butterscotch Pie", heal: 40, quantity: 2 },
@@ -140,13 +140,10 @@ export default function useGameManager() {
 
       case "provocar":
         messages = [
-          { text: "😤 Frisk provocou Sans com sarcasmo.",
+          { text: "😤 Frisk provocou Sans com sarcasmo. Seu ataque aumenta drasticamente!",
             effect: () => {
               modifyIntimacy(-20);
-              queueDialogue([{ text: "Frisk se enche de determinação!"},
-                { text: "O ataque de Frisk aumentou drasticamente"}],
-                  true)
-              hero.baseAttack += 10;
+              hero.baseAttack =  hero.baseAttack + 5;
             }
           },
           {
@@ -211,8 +208,8 @@ export default function useGameManager() {
       case "fight":
         messages = [
           { text: "🗡️ Frisk avança com determinação..." },
-          { text: "Sans sofreu 15 de dano!", effect: () => {
-              modifyLife("villain", -15);
+          { text: "Sans sofreu " + (hero.baseAttack + 5) + " de dano!", effect: () => {
+              modifyLife("villain", -(hero.baseAttack + 5));
               modifyIntimacy(-20);
             }
           }
@@ -274,7 +271,7 @@ export default function useGameManager() {
           { text: "Mas resolve comer um pouco." },
           { text: "🍰 Sans tomou o elixir dos herois! Seu ataque aumentou!", effect: () => {
               villain.life = villain.life+20 < 100 ? villain.life + 20 : 100;
-              villain.baseAttack += 5;
+              villain.baseAttack = villain.baseAttack + 5 >= 25 ? 25 : villain.baseAttack + 5;
             }
           }
         ];
