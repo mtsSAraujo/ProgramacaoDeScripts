@@ -1,13 +1,14 @@
 import { useState } from "react";
+import {log} from "next/dist/server/typescript/utils";
 
 
-export default function gameManager() {
+export default function GameManager() {
     const initialHero = {life: 100, name: "Jaspion"};
     const initialVillain = {life: 100, name: "Satan Goss"};
 
     const [hero, setHero] = useState(initialHero);
     const [villain, setVillain] = useState(initialVillain);
-    
+
     const [isHeroTurn, setIsHeroTurn] = useState(true);
 
     const modifyLife = (target, amount) => {
@@ -17,7 +18,7 @@ export default function gameManager() {
 
     const actions = {
         attack: () => { // Modificar para ser baseado em qualquer atributo ou logica que eu quiser
-            modifyLife("villain", -10) 
+            modifyLife("villain", -10)
             log("Heroi Atacou!")
         },
         defense: () => {},
