@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function gameManager() {
+export default function useGameManager() {
   const initialHero = { life: 100, name: "Frisk" };
   const initialVillain = { life: 100, name: "Sans", intimacy: 0 };
   const initialInventory = [
@@ -8,6 +8,7 @@ export default function gameManager() {
         { name: "Spider Donut", heal: 15, quantity: 2 },
         { name: "Nice Cream", heal: 20, quantity: 3 }
   ];
+
 
   const [hero, setHero] = useState(initialHero);
   const [villain, setVillain] = useState(initialVillain);
@@ -18,25 +19,33 @@ export default function gameManager() {
   const [actionLocked, setActionLocked] = useState(false);
   const [pendingVillainTurn, setPendingVillainTurn] = useState(false);
   const [isItemMenuOpen, setIsItemMenuOpen] = useState(false);
-
+  const [isActMenuOpen, setIsActMenuOpen] = useState(false);
   const [inventory, setInventory] = useState(initialInventory);
+
+  const canSpare = villain.intimacy >= 100;
+
+  const [isGameOver, setIsGameOver] = useState(false);
+
+  const endGame = (message) => {
+    setIsGameOver(true);
+    queueDialogue({ text: message });
+  };
 
   const queueDialogue = (messages, triggerVillain = false) => {
     const list = Array.isArray(messages) ? messages : [messages];
-    setDialogueQueue(prev => [...prev, ...list]);
-    setActionLocked(true);
+    if (list.length === 0) return;
 
-    if (currentDialogue === "O que Frisk vai fazer?" && list[0]) {
-      // Mostra a primeira mensagem imediatamente (sem clique inicial)
-      const [first, ...rest] = list;
+    const [first, ...rest] = list;
+
+    setActionLocked(true);
+    setPendingVillainTurn(triggerVillain);
+
+    // Atualiza fila e diálogo em conjunto
+    setDialogueQueue(() => {
       setCurrentDialogue(first.text);
       if (first.effect) first.effect();
-      setDialogueQueue(rest);
-    }
-
-    if (triggerVillain) {
-      setPendingVillainTurn(true);
-    }
+      return rest;
+    });
   };
 
   const advanceDialogue = () => {
@@ -46,22 +55,49 @@ export default function gameManager() {
       setCurrentDialogue(next.text);
       setDialogueQueue(rest);
     } else {
-      if (pendingVillainTurn) {
-        setPendingVillainTurn(false);
-        triggerVillainTurn();
-      } else {
-        setCurrentDialogue("O que Frisk vai fazer?");
-        setActionLocked(false);
+        if (pendingVillainTurn) {
+          setPendingVillainTurn(false);
+          triggerVillainTurn();
+        } else {
+          setCurrentDialogue("O que Frisk vai fazer?");
+          setActionLocked(false);
+        }
       }
-    }
+  };
+
+  const modifyIntimacy = (amount) => {
+    setVillain(prev => {
+      const newIntimacy = Math.min(100, Math.max(0, prev.intimacy + amount));
+      const updated = { ...prev, intimacy: newIntimacy };
+
+      if (prev.intimacy < 100 && newIntimacy >= 100) {
+        setDialogueQueue([]);
+        setActionLocked(false);
+        setIsHeroTurn(true);
+        queueDialogue({ text: "❗ Você se sente cheio de determinação!" });
+      }
+
+      return updated;
+    });
   };
 
   const modifyLife = (target, amount) => {
     const setter = target === "hero" ? setHero : setVillain;
-    setter(prev => ({
-      ...prev,
-      life: Math.max(0, Math.min(100, prev.life + amount))
-    }));
+
+    setter(prev => {
+      const updatedLife = Math.max(0, Math.min(100, prev.life + amount));
+      const updated = { ...prev, life: updatedLife };
+
+      if (updatedLife <= 0 && !isGameOver) {
+        if (target === "hero") {
+          endGame("💀 Frisk caiu em batalha... Fim de jogo.");
+        } else {
+          endGame("🏆 Sans foi derrotado. Vitória por combate!");
+        }
+      }
+
+      return updated;
+    });
   };
 
   const handleItemUse = (item) => {
@@ -87,17 +123,79 @@ export default function gameManager() {
     setIsHeroTurn(false);              // fim do turno do herói
   };
 
+  const handleActOption = (option) => {
+    if (!isHeroTurn || actionLocked) return;
+
+    let messages = [];
+
+    switch (option) {
+      case "elogiar":
+        messages = [
+          { text: "💬 Frisk elogiou Sans sinceramente.",
+            effect: () => modifyIntimacy(125)
+          },
+          { text: "Sans corou levemente."}
+        ];
+        break;
+
+      case "provocar":
+        messages = [
+          { text: "😤 Frisk provocou Sans com sarcasmo.",
+            effect: () => modifyIntimacy(-20)},
+          {
+            text: "Sans pareceu irritado."
+          }
+        ];
+        break;
+
+      case "dancar":
+        messages = [
+          { text: "💃 Frisk começou a dançar animadamente.",
+            effect: () => modifyIntimacy(15)
+          },
+          {
+            text: "Sans riu sem querer."
+          }
+        ];
+        break;
+
+      case "piada":
+        messages = [
+          { text: "😂 Frisk contou uma piada ruim.",
+            effect: () => modifyIntimacy(12)
+          },
+          {
+            text: "Sans deixou escapar um sorriso de canto."
+          }
+        ];
+        break;
+
+      default:
+        return;
+    }
+
+    setIsActMenuOpen(false);
+    queueDialogue(messages, true);
+    setIsHeroTurn(false);
+  };
+
   const handleAction = (type) => {
     if (!isHeroTurn || actionLocked) return;
 
     if (type === "cancel") {
-        setIsItemMenuOpen(false);
-        return;
+      setIsItemMenuOpen(false);
+      setIsActMenuOpen(false)
+      return;
     }
 
     if (type === "item") {
-        setIsItemMenuOpen(true);
-        return;
+      setIsItemMenuOpen(true);
+      return;
+    }
+
+    if (type === "act") {
+      setIsActMenuOpen(true);
+      return;
     }
 
     let messages = [];
@@ -106,20 +204,17 @@ export default function gameManager() {
       case "fight":
         messages = [
           { text: "🗡️ Frisk avança com determinação..." },
-          { text: "Sans sofreu 15 de dano!", effect: () => modifyLife("villain", -15) }
-        ];
-        break;
-
-      case "act":
-        messages = [
-          { text: "😐 Frisk fez uma careta engraçada." },
-          { text: "Sans pareceu levemente divertido." }
+          { text: "Sans sofreu 15 de dano!", effect: () => {
+              modifyLife("villain", -15);
+              modifyIntimacy(-20);
+            }
+          }
         ];
         break;
 
       case "mercy":
         if (villain.intimacy >= 100) {
-          messages = [{ text: "✨ Você poupou Sans. Vitória pacifista!" }];
+          messages = [{ text: "✨ Você poupou Sans. Vitória pacifista!", effect: () => endGame("✨ Vitória pacifista conquistada! Fim de jogo.") }];
         } else {
           messages = [{ text: "⚠️ Sans não está pronto para ser poupado." }];
         }
@@ -162,6 +257,8 @@ export default function gameManager() {
     setActionLocked(false);
     setPendingVillainTurn(false);
     setIsItemMenuOpen(false);
+    setIsActMenuOpen(false);
+    setIsGameOver(false);
   };
 
   return {
@@ -172,11 +269,16 @@ export default function gameManager() {
     setInventory,
     handleAction,
     handleItemUse,
+    handleActOption,
     resetGame,
     currentDialogue,
     advanceDialogue,
     actionLocked,
     isItemMenuOpen,
-    setIsItemMenuOpen
+    setIsItemMenuOpen,
+    isActMenuOpen,
+    setIsActMenuOpen,
+    isGameOver,
+    canSpare
   };  
 }
