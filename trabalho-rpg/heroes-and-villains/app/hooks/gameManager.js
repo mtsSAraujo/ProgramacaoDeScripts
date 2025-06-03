@@ -1,12 +1,12 @@
 import { useState } from "react";
 
 export default function useGameManager() {
-  const initialHero = { life: 100, name: "Frisk" };
-  const initialVillain = { life: 100, name: "Sans", intimacy: 0 };
+  const initialHero = { life: 100, name: "Frisk", baseAttack: 8 };
+  const initialVillain = { life: 100, name: "Sans", intimacy: 0, baseAttack: 10 };
   const initialInventory = [
-        { name: "Butterscotch Pie", heal: 30, quantity: 1 },
-        { name: "Spider Donut", heal: 15, quantity: 2 },
-        { name: "Nice Cream", heal: 20, quantity: 3 }
+        { name: "Butterscotch Pie", heal: 40, quantity: 2 },
+        { name: "Spider Donut", heal: 25, quantity: 2 },
+        { name: "Nice Cream", heal: 30, quantity: 3 }
   ];
 
 
@@ -70,7 +70,7 @@ export default function useGameManager() {
       const newIntimacy = Math.min(100, Math.max(0, prev.intimacy + amount));
       const updated = { ...prev, intimacy: newIntimacy };
 
-      if (prev.intimacy < 100 && newIntimacy >= 100) {
+      if (prev.intimacy < 200 && newIntimacy >= 200) {
         setDialogueQueue([]);
         setActionLocked(false);
         setIsHeroTurn(true);
@@ -132,7 +132,7 @@ export default function useGameManager() {
       case "elogiar":
         messages = [
           { text: "💬 Frisk elogiou Sans sinceramente.",
-            effect: () => modifyIntimacy(125)
+            effect: () => modifyIntimacy(25)
           },
           { text: "Sans corou levemente."}
         ];
@@ -141,7 +141,14 @@ export default function useGameManager() {
       case "provocar":
         messages = [
           { text: "😤 Frisk provocou Sans com sarcasmo.",
-            effect: () => modifyIntimacy(-20)},
+            effect: () => {
+              modifyIntimacy(-20);
+              queueDialogue([{ text: "Frisk se enche de determinação!"},
+                { text: "O ataque de Frisk aumentou drasticamente"}],
+                  true)
+              hero.baseAttack += 10;
+            }
+          },
           {
             text: "Sans pareceu irritado."
           }
@@ -229,20 +236,58 @@ export default function useGameManager() {
   };
 
   const triggerVillainTurn = () => {
-    const messages = [
-      { text: "💀 Sans prepara um ataque sombrio..." },
-      {
-        text: "Frisk perdeu 12 HP!",
-        effect: () => modifyLife("hero", -12)
-      },
-      {
-        text: "O que Frisk vai fazer?",
-        effect: () => {
-          setActionLocked(false);
-          setIsHeroTurn(true);
-        }
+    const attackType = Math.floor(Math.random() * 5) + 1;  // sorteio de 1 a 5
+    let messages = [];
+
+    switch (attackType) {
+      case 1:
+        messages = [
+          { text: "💀 Sans invoca ossos mágicos do chão..." },
+          { text: "Frisk tropeça e perde " + (villain.baseAttack + 5) + " HP!", effect: () => modifyLife("hero", -(villain.baseAttack + 5)) }
+        ];
+        break;
+
+      case 2:
+        messages = [
+          { text: "🔥 Sans lança uma rajada de Gaster Blasters!" },
+          { text: "Frisk levou um grande dano! (" + (villain.baseAttack + 8) + " HP)", effect: () => modifyLife("hero", -(villain.baseAttack + 8)) }
+        ];
+        break;
+
+      case 3:
+        messages = [
+          { text: "🌀 Sans distorce o espaço ao redor..." },
+          { text: "Frisk ficou tonto e perdeu " + (villain.baseAttack + 3) + " HP!", effect: () => modifyLife("hero", -(villain.baseAttack + 3)) }
+        ];
+        break;
+
+      case 4:
+        messages = [
+          { text: "😈 Sans ri com sarcasmo." },
+          { text: "Frisk se assusta com tamanha ousadia!", effect: () => modifyLife("hero", -5) }
+        ];
+        break;
+
+      default:
+        messages = [
+          { text: "Sans está indeciso..." },
+          { text: "Mas resolve comer um pouco." },
+          { text: "🍰 Sans tomou o elixir dos herois! Seu ataque aumentou!", effect: () => {
+              villain.life = villain.life+20 < 100 ? villain.life + 20 : 100;
+              villain.baseAttack += 5;
+            }
+          }
+        ];
+    }
+
+    messages.push({
+      text: "O que Frisk vai fazer?",
+      effect: () => {
+        setActionLocked(false);
+        setIsHeroTurn(true);
       }
-    ];
+    });
+
     queueDialogue(messages, false);
   };
 

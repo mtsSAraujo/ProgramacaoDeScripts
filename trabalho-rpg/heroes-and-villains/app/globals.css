@@ -188,3 +188,8 @@ body {
   100% { transform: scale(1); }
 }
 
+.character-image {
+  width: 100px;
+  height: auto;
+}
+

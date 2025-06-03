@@ -3,7 +3,13 @@ export default function Character({ data, alignment }) {
   
     return (
       <div className={`character ${alignment}`}>
-        <div className="sprite">🎮 {data.name}</div>
+          <div className="sprite">
+              <img
+                  src={`/sprites/${data.name.toLowerCase()}.gif`}
+                  alt={data.name}
+                  className="character-image"
+              />
+          </div>
         <div className="life-bar">
           <div className="life-fill" style={{ width: lifePercent }}></div>
           <div className="life-text">{data.life} HP</div>
