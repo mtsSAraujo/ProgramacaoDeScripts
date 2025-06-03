@@ -1,44 +1,182 @@
 import { useState } from "react";
-import {log} from "next/dist/server/typescript/utils";
 
+export default function gameManager() {
+  const initialHero = { life: 100, name: "Frisk" };
+  const initialVillain = { life: 100, name: "Sans", intimacy: 0 };
+  const initialInventory = [
+        { name: "Butterscotch Pie", heal: 30, quantity: 1 },
+        { name: "Spider Donut", heal: 15, quantity: 2 },
+        { name: "Nice Cream", heal: 20, quantity: 3 }
+  ];
 
-export default function GameManager() {
-    const initialHero = {life: 100, name: "Jaspion"};
-    const initialVillain = {life: 100, name: "Satan Goss"};
+  const [hero, setHero] = useState(initialHero);
+  const [villain, setVillain] = useState(initialVillain);
+  const [isHeroTurn, setIsHeroTurn] = useState(true);
+  const [showItemMenu, setShowItemMenu] = useState(false);
+  const [dialogueQueue, setDialogueQueue] = useState([]);
+  const [currentDialogue, setCurrentDialogue] = useState("O que Frisk vai fazer?");
+  const [actionLocked, setActionLocked] = useState(false);
+  const [pendingVillainTurn, setPendingVillainTurn] = useState(false);
+  const [isItemMenuOpen, setIsItemMenuOpen] = useState(false);
 
-    const [hero, setHero] = useState(initialHero);
-    const [villain, setVillain] = useState(initialVillain);
+  const [inventory, setInventory] = useState(initialInventory);
 
-    const [isHeroTurn, setIsHeroTurn] = useState(true);
+  const queueDialogue = (messages, triggerVillain = false) => {
+    const list = Array.isArray(messages) ? messages : [messages];
+    setDialogueQueue(prev => [...prev, ...list]);
+    setActionLocked(true);
 
-    const modifyLife = (target, amount) => {
-        const setter = target === "hero" ? setHero : setVillain;
-        setter((prev) => ({...prev, life: Math.max(0, prev.life + amount > 100 ? 100 : prev.life + amount)})) // Erro de lógica, não pode ter mais de 100 de hp;
+    if (currentDialogue === "O que Frisk vai fazer?" && list[0]) {
+      // Mostra a primeira mensagem imediatamente (sem clique inicial)
+      const [first, ...rest] = list;
+      setCurrentDialogue(first.text);
+      if (first.effect) first.effect();
+      setDialogueQueue(rest);
     }
 
-    const actions = {
-        attack: () => { // Modificar para ser baseado em qualquer atributo ou logica que eu quiser
-            modifyLife("villain", -10)
-            log("Heroi Atacou!")
-        },
-        defense: () => {},
-        usePotion: () => {},
-        flee: () => {}
+    if (triggerVillain) {
+      setPendingVillainTurn(true);
+    }
+  };
+
+  const advanceDialogue = () => {
+    if (dialogueQueue.length > 0) {
+      const [next, ...rest] = dialogueQueue;
+      if (next.effect) next.effect();
+      setCurrentDialogue(next.text);
+      setDialogueQueue(rest);
+    } else {
+      if (pendingVillainTurn) {
+        setPendingVillainTurn(false);
+        triggerVillainTurn();
+      } else {
+        setCurrentDialogue("O que Frisk vai fazer?");
+        setActionLocked(false);
+      }
+    }
+  };
+
+  const modifyLife = (target, amount) => {
+    const setter = target === "hero" ? setHero : setVillain;
+    setter(prev => ({
+      ...prev,
+      life: Math.max(0, Math.min(100, prev.life + amount))
+    }));
+  };
+
+  const handleItemUse = (item) => {
+    if (!isHeroTurn || actionLocked) return;
+
+    if (item.quantity <= 0) return;
+
+    setInventory(prev =>
+        prev.map(i =>
+          i.name === item.name
+            ? { ...i, quantity: i.quantity - 1 }
+            : i
+        ).filter(i => i.quantity > 0) // remove itens com quantidade 0
+      );
+  
+    const messages = [
+      { text: `🍰 Frisk usou ${item.name}.` },
+      { text: `Recuperou ${item.heal} HP!`, effect: () => modifyLife("hero", item.heal) }
+    ];
+
+    setIsItemMenuOpen(false);           // fecha o menu imediatamente
+    queueDialogue(messages, true);     // adiciona mensagens na fila
+    setIsHeroTurn(false);              // fim do turno do herói
+  };
+
+  const handleAction = (type) => {
+    if (!isHeroTurn || actionLocked) return;
+
+    if (type === "cancel") {
+        setIsItemMenuOpen(false);
+        return;
     }
 
-    const handleHeroAction = (action) => {
-        if(!isHeroTurn) return;
-        actions[action]?.();
-        setIsHeroTurn(false);
-
-        // turno do vilão
-        setTimeout(() => {
-            //logica do vilão
-            setIsHeroTurn(true);
-        }, 2000)
+    if (type === "item") {
+        setIsItemMenuOpen(true);
+        return;
     }
 
-    return{
-        hero, villain, handleHeroAction, isHeroTurn
-    };
+    let messages = [];
+
+    switch (type) {
+      case "fight":
+        messages = [
+          { text: "🗡️ Frisk avança com determinação..." },
+          { text: "Sans sofreu 15 de dano!", effect: () => modifyLife("villain", -15) }
+        ];
+        break;
+
+      case "act":
+        messages = [
+          { text: "😐 Frisk fez uma careta engraçada." },
+          { text: "Sans pareceu levemente divertido." }
+        ];
+        break;
+
+      case "mercy":
+        if (villain.intimacy >= 100) {
+          messages = [{ text: "✨ Você poupou Sans. Vitória pacifista!" }];
+        } else {
+          messages = [{ text: "⚠️ Sans não está pronto para ser poupado." }];
+        }
+        break;
+
+      default:
+        return;
+    }
+
+    queueDialogue(messages, true);
+    setIsHeroTurn(false);
+  };
+
+  const triggerVillainTurn = () => {
+    const messages = [
+      { text: "💀 Sans prepara um ataque sombrio..." },
+      {
+        text: "Frisk perdeu 12 HP!",
+        effect: () => modifyLife("hero", -12)
+      },
+      {
+        text: "O que Frisk vai fazer?",
+        effect: () => {
+          setActionLocked(false);
+          setIsHeroTurn(true);
+        }
+      }
+    ];
+    queueDialogue(messages, false);
+  };
+
+  const resetGame = () => {
+    setHero(initialHero);
+    setVillain(initialVillain);
+    setCurrentDialogue("O que Frisk vai fazer?");
+    setDialogueQueue([]);
+    setInventory(initialInventory);
+    setIsHeroTurn(true);
+    setShowItemMenu(false);
+    setActionLocked(false);
+    setPendingVillainTurn(false);
+    setIsItemMenuOpen(false);
+  };
+
+  return {
+    hero,
+    villain,
+    isHeroTurn,
+    inventory,
+    setInventory,
+    handleAction,
+    handleItemUse,
+    resetGame,
+    currentDialogue,
+    advanceDialogue,
+    actionLocked,
+    isItemMenuOpen,
+    setIsItemMenuOpen
+  };  
 }

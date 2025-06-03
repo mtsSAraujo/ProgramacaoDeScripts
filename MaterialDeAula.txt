@@ -25,3 +25,12 @@ No caso de um produto esgotado: imagem em preto e branco e linha sobre o nome do
 Criar uma calculadora usando useState();
 A ideia é fazer uma calculadora de operaçoes basicas;
 essa calculadora deve ser igual a calculadora do windows;
+
+Criar um projeto novo vazio:
+npm init -y
+
+Adicionar o prisma as dependencias:
+npm install express prisma @prisma/client pg
+npm install -D nodemon 
+
+Senha*Nova2011
