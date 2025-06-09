@@ -29,6 +29,29 @@ const ProdutoController = {
         } catch {
             res.status(400).json(error)
         }
+    },
+
+    async getById(req, res) {
+        const produto = await uow.produtos.findById(req.params.id, {catalogo: true});
+
+        if(!produto) return res.status(404).json({error: "Produto não encontrado"});
+
+        res.status(200).json(new ProdutoDtoResponse(produto));
+    },
+
+    async update(req, res) {
+        const dto = new ProdutoDtoCreateRequest(req.body);
+        const produto = await uow.produtos.update(req.params.id, dto);
+
+        if(!produto) return res.status(404).json({error: "Produto não encontrado"});
+        res.status(200).json(new ProdutoDtoResponse(produto));
+    },
+
+    async delete(req, res) {
+        const produto = await uow.produtos.delete(Number(req.params.id));
+        if(!produto) return res.status(404).json({error: "Produto não encontrado"});
+
+        res.status(204).send();
     }
 }
 
