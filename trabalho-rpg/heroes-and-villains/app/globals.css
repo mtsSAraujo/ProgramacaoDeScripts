@@ -49,6 +49,7 @@ body {
 }
 
 .life-text {
+  color: white;
   font-size: 14px;
   margin-top: 5px;
 }
@@ -172,5 +173,24 @@ body {
 .item-option.cancel:hover {
   background-color: red;
   color: white;
+}
+
+.action-button.mercy-available {
+  color: yellow;
+  border: 2px solid yellow;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px black;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.character-image {
+  width: 100px;
+  height: auto;
 }
 
